@@ -91,7 +91,63 @@ class CareerCoachAI:
                 max_tokens=1500
             )
             
-            result = json.loads(response.choices[0].message.content)
+            # 디버깅: 원시 응답 확인
+            raw_content = response.choices[0].message.content
+            print(f"🔍 OpenAI 원시 응답: {raw_content}")
+            
+            # JSON 파싱 전 정리
+            if raw_content:
+                # 코드 블록 마커 제거
+                if raw_content.startswith("```json"):
+                    raw_content = raw_content[7:]
+                if raw_content.endswith("```"):
+                    raw_content = raw_content[:-3]
+                raw_content = raw_content.strip()
+                
+                result = json.loads(raw_content)
+            else:
+                raise ValueError("Empty response from OpenAI")
+            
+            return CareerAnalysis(
+                career_level=result['career_level'],
+                strength_areas=result['strength_areas'],
+                improvement_areas=result['improvement_areas'],
+                career_pattern=result['career_pattern'],
+                market_competitiveness=result['market_competitiveness'],
+                personality_traits=result['personality_traits'],
+                growth_trajectory=result['growth_trajectory']
+            )
+            
+        except json.JSONDecodeError as e:
+            # JSON 파싱 오류 상세 로깅
+            print(f"❌ JSON 파싱 오류: {e}")
+            print(f"🔍 문제가 된 응답 내용: {raw_content}")
+            
+            # JSON 복구 시도
+            try:
+                # 불완전한 JSON을 완성하려고 시도
+                if "{" in raw_content:
+                    start_idx = raw_content.find("{")
+                    json_part = raw_content[start_idx:]
+                    # 중괄호 균형 맞추기
+                    open_count = json_part.count("{")
+                    close_count = json_part.count("}")
+                    if open_count > close_count:
+                        json_part += "}" * (open_count - close_count)
+                    result = json.loads(json_part)
+                else:
+                    raise ValueError("No JSON structure found")
+            except:
+                # 완전히 실패한 경우 기본값 사용
+                result = {
+                    "career_level": "분석 중",
+                    "strength_areas": ["기술적 역량", "실무 경험"],
+                    "improvement_areas": ["추가 분석 필요"],
+                    "career_pattern": "분석 진행 중",
+                    "market_competitiveness": 5,
+                    "personality_traits": ["분석 중"],
+                    "growth_trajectory": "추가 분석 필요"
+                }
             
             return CareerAnalysis(
                 career_level=result['career_level'],
@@ -104,6 +160,10 @@ class CareerCoachAI:
             )
             
         except Exception as e:
+            # 완전한 API 호출 실패
+            print(f"❌ OpenAI API 호출 오류: {e}")
+            print(f"API 키 설정 여부: {'설정됨' if os.getenv('OPENAI_API_KEY') else '미설정'}")
+            
             # 기본값 반환 (에러 핸들링)
             return CareerAnalysis(
                 career_level="분석 중",
@@ -181,10 +241,27 @@ class CareerCoachAI:
                 max_tokens=2000
             )
             
-            questions = json.loads(response.choices[0].message.content)
+            # JSON 파싱 개선
+            raw_content = response.choices[0].message.content
+            print(f"🔍 면접 질문 원시 응답: {raw_content}")
+            
+            # JSON 정리
+            if raw_content.startswith("```json"):
+                raw_content = raw_content[7:]
+            if raw_content.endswith("```"):
+                raw_content = raw_content[:-3]
+            raw_content = raw_content.strip()
+            
+            questions = json.loads(raw_content)
             return questions[:5]  # 정확히 5개만 반환
             
+        except json.JSONDecodeError as e:
+            print(f"❌ 면접 질문 JSON 파싱 오류: {e}")
+            print(f"🔍 문제가 된 응답: {raw_content}")
+            # 기본 질문 반환
         except Exception as e:
+            print(f"❌ 면접 질문 생성 오류: {e}")
+            # 기본 질문 반환
             # 기본 질문 반환 (에러 핸들링)
             return [
                 {
@@ -271,10 +348,33 @@ class CareerCoachAI:
                 max_tokens=2500
             )
             
-            learning_steps = json.loads(response.choices[0].message.content)
+            # JSON 파싱 개선
+            raw_content = response.choices[0].message.content
+            print(f"🔍 학습 경로 원시 응답: {raw_content}")
+            
+            # JSON 부분만 추출
+            if "```json" in raw_content:
+                start_idx = raw_content.find("```json") + 7
+                end_idx = raw_content.find("```", start_idx)
+                if end_idx != -1:
+                    raw_content = raw_content[start_idx:end_idx]
+            elif "[" in raw_content:
+                # JSON 배열 부분만 추출
+                start_idx = raw_content.find("[")
+                end_idx = raw_content.rfind("]") + 1
+                raw_content = raw_content[start_idx:end_idx]
+            
+            raw_content = raw_content.strip()
+            learning_steps = json.loads(raw_content)
             return learning_steps
             
+        except json.JSONDecodeError as e:
+            print(f"❌ 학습 경로 JSON 파싱 오류: {e}")
+            print(f"🔍 문제가 된 응답: {raw_content}")
+            # 기본 학습 경로 반환
         except Exception as e:
+            print(f"❌ 학습 경로 생성 오류: {e}")
+            # 기본 학습 경로 반환
             # 기본 학습 경로 반환 (에러 핸들링)
             return [
                 {
