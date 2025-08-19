@@ -58,7 +58,52 @@ except json.JSONDecodeError:
 
 ---
 
-## 🔧 기술적 도전과 해결
+## 🤖 AI 도구 활용 과정
+
+### GitHub Copilot 협업 사례
+
+**1. 모델 설계 시**
+```python
+# Human: 이력서 프로필 모델을 설계해줘
+# Copilot 제안:
+class ResumeProfile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    career_summary = models.TextField(max_length=1000)
+    # ... 나머지 필드들
+```
+
+**2. 프롬프트 엔지니어링 개선**
+```python
+# Human: 더 전문적인 면접관 페르소나를 만들어줘
+# Copilot 제안:
+interview_prompt = f"""
+당신은 {company_styles.get(company_type, "일반 기업")} 특성을 가진 회사의 {position_level} 포지션 면접관입니다.
+"""
+```
+
+**3. 에러 핸들링 개선**
+```python
+# Human: JSON 파싱 오류를 견고하게 처리해줘
+# Copilot 제안:
+except json.JSONDecodeError as e:
+    # JSON 복구 시도
+    if "{" in raw_content:
+        start_idx = raw_content.find("{")
+        # ...
+```
+
+### ChatGPT/Claude 상담 사례
+
+**Q: Django Ninja vs FastAPI 선택 기준**
+**A: Django Ninja 추천 - Django 생태계 활용 + 자동 문서화**
+
+**Q: OpenAI API 비용 최적화 방법**  
+**A: GPT-4o-mini 사용, temperature 조절, max_tokens 제한**
+
+**Q: 프롬프트 엔지니어링 모범 사례**
+**A: 역할 기반 페르소나, 구조화된 출력, 컨텍스트 활용**
+
+---
 
 ### 도전 1: OpenAI API JSON 파싱 오류
 **문제**: 
