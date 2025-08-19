@@ -4,7 +4,7 @@ Django Ninja에서 사용할 요청/응답 스키마
 """
 
 from pydantic import BaseModel, Field, validator
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
 from enum import Enum
 
