@@ -3,22 +3,25 @@ version: '3.8'
 services:
   web:
     build: .
-    expose:
-      - "8000"  # 내부 포트만 노출
+    container_name: career-coach-web
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=career_coach.settings
+      - DEBUG=False
     env_file:
       - .env
-    volumes:
-      - ./db.sqlite3:/app/db.sqlite3  # SQLite DB 파일 마운트 (데이터 보존)
-    restart: unless-stopped
 
   nginx:
     image: nginx:alpine
+    container_name: career-coach-nginx
     ports:
-      - "80:80"  # 외부 80포트로 서비스
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt  # SSL 인증서 볼륨
+      - /var/www/certbot:/var/www/certbot  # Certbot challenge 볼륨
     depends_on:
       - web
-    restart: unless-stopped
