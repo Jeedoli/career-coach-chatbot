@@ -9,9 +9,9 @@
 
 ## 📺 데모 영상 및 문서
 
-- 🌐 **API 문서 (Swagger)**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+- 🌐 **라이브 API 문서 (Swagger)**: [https://api.jeedoli.shop/api/docs](https://api.jeedoli.shop/api/docs)
 - 📊 **개발 과정 로그**: [AI_CHALLENGE_DEV_LOG.md](./AI_CHALLENGE_DEV_LOG.md)
-- 🧪 **라이브 테스트**: `python api_test_demo.py` 실행
+- 🧪 **자동 테스트 스크립트**: `python api_test_demo.py` 실행 (선택사항)
 
 ## 🎯 AI Challenge 요구사항 100% 달성
 
@@ -57,152 +57,152 @@
 
 ---
 
-## 🚀 빠른 시작 가이드
+## 🚀 API 사용 가이드 (Swagger UI)
 
-### 📋 사전 준비사항
+### 📋 사전 안내
 
-1. **Python 3.12** 이상
-2. **Poetry** (의존성 관리)
-3. **OpenAI API 키** ⚠️ **필수** (약 $5면 충분, 테스트 1회당 약 15원)
+**🌐 라이브 API 주소**: [https://api.jeedoli.shop/api/docs](https://api.jeedoli.shop/api/docs)
 
-### 🛠️ 설치 및 실행
+이 API는 이미 배포되어 있어 **별도 설치 없이 바로 테스트** 가능합니다! 
+Swagger UI를 통해 각 API 엔드포인트를 쉽게 테스트하고 응답을 확인할 수 있습니다.
 
-```bash
-# 1. 저장소 클론
-git clone https://github.com/Jeedoli/career-coach-chatbot.git
-cd career-coach-chatbot
+### 🛠️ Swagger UI 사용법
 
-# 2. Poetry 설치 (macOS/Linux)
-curl -sSL https://install.python-poetry.org | python3 -
+#### 1️⃣ **Swagger UI 접속**
+- 브라우저에서 [https://api.jeedoli.shop/api/docs](https://api.jeedoli.shop/api/docs) 접속
+- 3개의 주요 API 엔드포인트 확인:
+  - `POST /api/profiles` - 이력서 프로필 생성 및 AI 분석
+  - `POST /api/interview-sessions` - 맞춤형 면접 질문 생성
+  - `POST /api/learning-paths` - 개인화된 학습 경로 추천
 
-# 3. 의존성 설치
-poetry install
+#### 2️⃣ **API 테스트 순서**
 
-# 4. 환경 변수 설정 ⚠️ 필수
-cp .env.example .env
-# .env 파일에 OpenAI API 키 입력
-echo "OPENAI_API_KEY=sk-proj-여기에실제키입력" >> .env
+##### 📝 **Step 1: 이력서 프로필 생성**
+1. `POST /api/profiles` 섹션 클릭
+2. **"Try it out"** 버튼 클릭
+3. **Request body** 영역에서 **"Example Value"** 탭 확인
+4. 예시 데이터를 참고하여 본인의 정보로 수정:
+   ```json
+   {
+     "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험. 월 100만 주문 처리 시스템 설계 및 운영, 팀 리딩 경험 보유.",
+     "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
+     "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes, MySQL, Redis, Git, Jenkins",
+     "experience_years": 3
+   }
+   ```
+5. **"Execute"** 버튼 클릭
+6. **응답에서 `id` 값 복사** (다음 단계에서 사용)
 
-# 5. 데이터베이스 설정
-poetry run python manage.py migrate
+**⏱️ 예상 소요 시간**: 5-10초 (AI 분석 포함)
+**📄 응답 내용**: 프로필 정보 + AI가 분석한 커리어 레벨, 강점, 개선점, 시장 경쟁력
 
-# 6. 서버 실행
-poetry run python manage.py runserver
-```
+##### 🎯 **Step 2: 맞춤형 면접 질문 생성**
+1. `POST /api/interview-sessions` 섹션 클릭
+2. **"Try it out"** 버튼 클릭
+3. Request body에 Step 1에서 받은 `profile_id` 입력:
+   ```json
+   {
+     "profile_id": "여기에_Step1에서_받은_ID_입력",
+     "target_company_type": "startup",
+     "target_position_level": "mid"
+   }
+   ```
+4. **"Execute"** 버튼 클릭
 
-### 🎉 접속 확인
+**⏱️ 예상 소요 시간**: 8-15초
+**📄 응답 내용**: 개인 경험을 반영한 구체적인 면접 질문 5개 + 답변 가이드
 
-- **🌐 API 문서**: http://localhost:8000/api/docs
-- **🩺 헬스체크**: http://localhost:8000/api/health
+##### 📚 **Step 3: 개인화된 학습 경로 추천**
+1. `POST /api/learning-paths` 섹션 클릭
+2. **"Try it out"** 버튼 클릭
+3. Request body에 동일한 `profile_id` 입력:
+   ```json
+   {
+     "profile_id": "여기에_Step1에서_받은_ID_입력",
+     "target_goal": "skill_enhancement",
+     "preferred_duration_months": 3
+   }
+   ```
+4. **"Execute"** 버튼 클릭
 
----
+**⏱️ 예상 소요 시간**: 10-20초
+**📄 응답 내용**: 3단계 12주 학습 로드맵 (기술 심화 + 프로젝트 + 커뮤니케이션)
 
-## 🧪 API 테스트 가이드
+#### 3️⃣ **응답 데이터 해석 가이드**
 
-### 🚀 자동 테스트 (추천)
+##### 📊 **이력서 분석 결과**
+- `career_level`: AI가 평가한 현재 커리어 레벨
+- `strength_areas`: 시장에서 차별화되는 강점 영역
+- `improvement_areas`: 발전이 필요한 영역
+- `market_competitiveness`: 현재 채용시장 경쟁력 (1-10점)
 
-```bash
-# 전체 플로우 자동 테스트
-python api_test_demo.py
-```
+##### 🎯 **면접 질문 분석**
+- `question`: 개인 경험을 반영한 구체적 질문
+- `category`: 질문 유형 (기술/경험/상황 등)
+- `difficulty_level`: 난이도 (초급/중급/고급)
+- `suggested_answer_approach`: 효과적인 답변 구조 가이드
 
-**실행 결과 예시:**
-```
-🤖 AI Challenge - 커리어 코치 챗봇 API 테스트 시작
-🌐 API URL: http://localhost:8000/api
+##### 📈 **학습 로드맵 구조**
+- `phase`: 각 학습 단계명
+- `duration_weeks`: 예상 소요 기간
+- `objectives`: 구체적 학습 목표
+- `resources`: 추천 학습 자료
+- `milestones`: 측정 가능한 성과 지표
 
-============================================================
-🔍 API 상태 확인
-============================================================
-✅ Status: 200
+### � **고급 사용 팁**
 
-============================================================
-🔍 1단계: 이력서 프로필 생성 및 AI 분석
-============================================================
-📤 Request Data:
-{
-  "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반...",
-  "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
-  "technical_skills": "Python, Django, Spring Boot, Java, AWS...",
-  "experience_years": 3
-}
-✅ Status: 201
-📄 Response: { AI 분석 결과... }
-
-============================================================
-🔍 2단계: 맞춤형 면접 질문 5개 생성
-============================================================
-...면접 질문 5개 생성 결과...
-
-============================================================
-🔍 3단계: 개인화된 학습 경로 추천
-============================================================
-...3단계 학습 로드맵 생성 결과...
-
-🎉 전체 테스트 완료!
-⏱️  총 소요 시간: 25.43초
-✅ AI Challenge 3대 요구사항 모두 검증 완료
-```
-
-### 🔧 수동 테스트 (Swagger UI)
-
-1. **http://localhost:8000/api/docs** 접속
-2. 각 API 엔드포인트에서 "Try it out" 클릭
-3. 예시 데이터 입력 후 "Execute" 실행
-
-### 📋 **1단계: 프로필 생성 테스트**
-
-**Endpoint**: `POST /api/profiles`
-
+#### 🔄 **다양한 시나리오 테스트**
 ```json
+// 스타트업 지원 시
 {
-  "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험. 월 1천만 건 트래픽 처리 시스템 설계 및 AWS 클라우드 운영. 팀 리딩 경험과 성능 최적화를 통한 응답시간 50% 개선 달성.",
-  "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
-  "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes, MySQL, Redis, Git, Jenkins",
-  "experience_years": 3
-}
-```
-
-**예상 응답**: AI 분석 결과 포함된 프로필 (약 5-10초 소요)
-
-### 📋 **2단계: 면접 질문 생성 테스트**
-
-**Endpoint**: `POST /api/interview-sessions`
-
-```json
-{
-  "profile_id": "위에서_생성된_프로필_ID",
   "target_company_type": "startup",
   "target_position_level": "mid"
 }
-```
 
-**예상 응답**: 개인화된 면접 질문 5개 (카테고리별 1개씩)
-
-### 📋 **3단계: 학습 경로 생성 테스트**
-
-**Endpoint**: `POST /api/learning-paths`
-
-```json
+// 대기업 지원 시  
 {
-  "profile_id": "위에서_생성된_프로필_ID",
-  "target_goal": "skill_enhancement",
-  "preferred_duration_months": 3
+  "target_company_type": "large",
+  "target_position_level": "senior"
+}
+
+// 외국계 기업 지원 시
+{
+  "target_company_type": "foreign", 
+  "target_position_level": "lead"
 }
 ```
 
-**예상 응답**: 3단계 12주 학습 로드맵 (기술 심화 + 프로젝트 + 커뮤니케이션)
+#### 📚 **학습 목표별 테스트**
+```json
+// 기술 스킬 향상
+{ "target_goal": "skill_enhancement" }
 
----
+// 커리어 전환 준비
+{ "target_goal": "career_change" }
 
-## 💡 cURL 명령어 예시
+// 승진 준비
+{ "target_goal": "promotion" }
+
+// 면접 집중 준비
+{ "target_goal": "interview_prep" }
+```
+
+### 💡 **cURL 명령어 예시**
+
+브라우저 대신 터미널에서 테스트하고 싶다면:
 
 ```bash
-# 1. 헬스체크
-curl -X GET "http://localhost:8000/api/health"
+# 1. 저장소 클론 (테스트 스크립트 사용 시에만 필요)
+git clone https://github.com/Jeedoli/career-coach-chatbot.git
+cd career-coach-chatbot
 
-# 2. 프로필 생성
-curl -X POST "http://localhost:8000/api/profiles" \
+# 2. 자동 테스트 스크립트 실행
+python api_test_demo.py
+```
+
+**⚠️ 참고**: 자동 테스트 스크립트는 로컬 환경 설정이 필요하므로, **Swagger UI 사용을 더 추천**합니다!
+# 1. 프로필 생성
+curl -X POST "https://api.jeedoli.shop/api/profiles" \
   -H "Content-Type: application/json" \
   -d '{
     "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험...",
@@ -211,8 +211,8 @@ curl -X POST "http://localhost:8000/api/profiles" \
     "experience_years": 3
   }'
 
-# 3. 면접 질문 생성 (profile_id 교체 필요)
-curl -X POST "http://localhost:8000/api/interview-sessions" \
+# 2. 면접 질문 생성 (profile_id 교체 필요)
+curl -X POST "https://api.jeedoli.shop/api/interview-sessions" \
   -H "Content-Type: application/json" \
   -d '{
     "profile_id": "YOUR_PROFILE_ID_HERE",
@@ -220,14 +220,28 @@ curl -X POST "http://localhost:8000/api/interview-sessions" \
     "target_position_level": "mid"
   }'
 
-# 4. 학습 경로 생성 (profile_id 교체 필요)
-curl -X POST "http://localhost:8000/api/learning-paths" \
+# 3. 학습 경로 생성 (profile_id 교체 필요)
+curl -X POST "https://api.jeedoli.shop/api/learning-paths" \
   -H "Content-Type: application/json" \
   -d '{
     "profile_id": "YOUR_PROFILE_ID_HERE",
-    "target_goal": "skill_enhancement",
+    "target_goal": "skill_enhancement", 
     "preferred_duration_months": 3
   }'
+```
+
+### 🎉 **완료!**
+
+이제 **설치 없이 바로** AI 커리어 코치 시스템을 체험할 수 있습니다!
+- 💡 **개인화된 면접 질문** 받기
+- 📈 **맞춤형 학습 로드맵** 확인
+- 🎯 **AI 커리어 분석** 결과 검토
+
+---
+
+## 🧪 자동 테스트 스크립트 (선택사항)
+
+로컬에서 자동화된 테스트를 원한다면:
 ```
 
 ---
