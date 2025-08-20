@@ -187,65 +187,6 @@ Swagger UI를 통해 각 API 엔드포인트를 쉽게 테스트하고 응답을
 { "target_goal": "interview_prep" }
 ```
 
-### 💡 **cURL 명령어 예시**
-
-브라우저 대신 터미널에서 테스트하고 싶다면:
-
-```bash
-# 1. 저장소 클론 (테스트 스크립트 사용 시에만 필요)
-git clone https://github.com/Jeedoli/career-coach-chatbot.git
-cd career-coach-chatbot
-
-# 2. 자동 테스트 스크립트 실행
-python api_test_demo.py
-```
-
-**⚠️ 참고**: 자동 테스트 스크립트는 로컬 환경 설정이 필요하므로, **Swagger UI 사용을 더 추천**합니다!
-# 1. 프로필 생성
-curl -X POST "https://api.jeedoli.shop/api/profiles" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험...",
-    "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
-    "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker",
-    "experience_years": 3
-  }'
-
-# 2. 면접 질문 생성 (profile_id 교체 필요)
-curl -X POST "https://api.jeedoli.shop/api/interview-sessions" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "profile_id": "YOUR_PROFILE_ID_HERE",
-    "target_company_type": "startup",
-    "target_position_level": "mid"
-  }'
-
-# 3. 학습 경로 생성 (profile_id 교체 필요)
-curl -X POST "https://api.jeedoli.shop/api/learning-paths" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "profile_id": "YOUR_PROFILE_ID_HERE",
-    "target_goal": "skill_enhancement", 
-    "preferred_duration_months": 3
-  }'
-```
-
-### 🎉 **완료!**
-
-이제 **설치 없이 바로** AI 커리어 코치 시스템을 체험할 수 있습니다!
-- 💡 **개인화된 면접 질문** 받기
-- 📈 **맞춤형 학습 로드맵** 확인
-- 🎯 **AI 커리어 분석** 결과 검토
-
----
-
-## 🧪 자동 테스트 스크립트 (선택사항)
-
-로컬에서 자동화된 테스트를 원한다면:
-```
-
----
-
 ## 🛠️ 기술 스택 상세
 
 ### 🎯 **Backend Architecture**
