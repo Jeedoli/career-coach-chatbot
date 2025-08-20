@@ -70,6 +70,16 @@ class ResumeProfileCreateRequest(BaseModel):
         example=3
     )
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험. 월 100만 주문 처리 시스템 설계 및 운영, 팀 리딩 경험 보유. AWS 클라우드 인프라 구축 및 Docker/Kubernetes 기반 CI/CD 파이프라인 구축 경험.",
+                "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
+                "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes, MySQL, Redis, Git, Jenkins, JPA/Hibernate, RESTful API",
+                "experience_years": 3
+            }
+        }
+
     @validator('career_summary')
     def validate_career_summary(cls, v):
         if not v.strip():
@@ -99,6 +109,15 @@ class InterviewSessionCreateRequest(BaseModel):
         example="mid"
     )
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
+                "target_company_type": "startup",
+                "target_position_level": "mid"
+            }
+        }
+
 
 class LearningPathCreateRequest(BaseModel):
     """학습 경로 생성 요청"""
@@ -116,6 +135,15 @@ class LearningPathCreateRequest(BaseModel):
         description="선호하는 학습 기간(개월) - 1~24개월 범위",
         example=3
     )
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
+                "target_goal": "skill_enhancement",
+                "preferred_duration_months": 3
+            }
+        }
 
 
 # === 응답 스키마 ===

@@ -24,6 +24,9 @@ RUN poetry install --only=main
 # 애플리케이션 코드 복사
 COPY . .
 
+# 데이터베이스 디렉토리 생성 및 권한 설정
+RUN mkdir -p /app/db && chmod 755 /app/db
+
 # 정적 파일 수집
 RUN python manage.py collectstatic --noinput
 

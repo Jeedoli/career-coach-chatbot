@@ -7,6 +7,7 @@ services:
     volumes:
       - .:/app
       - static_volume:/app/staticfiles  # 정적 파일 볼륨 추가
+      - db_volume:/app/db  # 데이터베이스 볼륨 추가
     ports:
       - "8000:8000"
     environment:
@@ -30,3 +31,4 @@ services:
 
 volumes:
   static_volume:  # 정적 파일을 위한 볼륨 정의
+  db_volume:      # 데이터베이스를 위한 볼륨 정의
