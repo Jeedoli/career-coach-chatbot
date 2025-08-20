@@ -32,9 +32,28 @@ from .ai_service import career_coach_ai
 
 # API 인스턴스 생성
 api = NinjaAPI(
-    title="🤖 커리어 코치 챗봇 API",
-    description="이력서 기반 개인 맞춤형 면접 질문 생성 & 학습 경로 추천 시스템",
-    version="1.0.0"
+    title="🤖 AI Challenge: 커리어 코치 챗봇 API",
+    description="""
+    ## 🎯 이력서 기반 개인 맞춤형 커리어 코칭 시스템
+    
+    **3단계 AI 분석 프로세스:**
+    1. 📝 **이력서 심층 분석** - 20년 경력 헤드헌터 관점의 정밀 진단
+    2. 🎯 **맞춤형 면접 질문 5개** - 회사 유형별 실전 질문 생성
+    3. 📚 **개인화 학습 로드맵** - 기술 심화 + 프로젝트 + 커뮤니케이션 스킬
+    
+    **핵심 차별화:**
+    - ✨ 다단계 프롬프트 엔지니어링으로 진짜 개인화 구현
+    - 🏢 회사 유형별 맞춤 면접 스타일 (스타트업/대기업/외국계)
+    - 📈 실무 중심 학습 경로 (포트폴리오 프로젝트 포함)
+    - 🤖 GPT-4o-mini 기반 비용 효율적 AI 분석
+    
+    **사용법:**
+    1. `/profiles` 로 이력서 정보 입력 및 AI 분석
+    2. `/interview-sessions` 로 맞춤형 면접 질문 생성
+    3. `/learning-paths` 로 개인화된 학습 경로 추천
+    """,
+    version="1.0.0",
+    docs_url="/docs"
 )
 
 
@@ -49,7 +68,32 @@ def global_exception_handler(request, exc):
 
 # === 1. 이력서 프로필 관리 ===
 
-@api.post("/profiles", response={201: ResumeProfileResponse, 400: ErrorResponse})
+@api.post("/profiles", 
+          response={201: ResumeProfileResponse, 400: ErrorResponse},
+          summary="📝 이력서 프로필 생성 및 AI 분석",
+          description="""
+          ## 🎯 핵심 기능
+          구직자의 이력서 정보를 입력받아 **AI가 심층 분석**하고 프로필을 생성합니다.
+          
+          ## 🤖 AI 분석 내용
+          - **커리어 레벨 정밀 진단**: 경력 연수 대비 실제 성숙도 평가
+          - **시장 차별화 강점 분석**: 타 개발자 대비 독특한 경험과 역량
+          - **전략적 개선 영역**: 현재 시장에서 요구되지만 부족한 스킬
+          - **시장 경쟁력 점수**: 현재 채용시장에서의 경쟁력 (1-10점)
+          
+          ## 📋 입력 예시
+          ```json
+          {
+            "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험...",
+            "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
+            "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes",
+            "experience_years": 3
+          }
+          ```
+          
+          ⚡ **처리 시간**: 약 5-10초 (OpenAI API 호출 포함)
+          """,
+          tags=["이력서 분석"])
 def create_profile(request, data: ResumeProfileCreateRequest):
     """
     📝 이력서 핵심 정보 입력 API
@@ -116,7 +160,11 @@ def create_profile(request, data: ResumeProfileCreateRequest):
         )
 
 
-@api.get("/profiles/{profile_id}", response={200: ResumeProfileResponse, 404: ErrorResponse})
+@api.get("/profiles/{profile_id}", 
+         response={200: ResumeProfileResponse, 404: ErrorResponse},
+         summary="📄 프로필 조회",
+         description="생성된 이력서 프로필과 AI 분석 결과를 조회합니다.",
+         tags=["이력서 분석"])
 def get_profile(request, profile_id: str):
     """프로필 조회 API"""
     try:
@@ -147,7 +195,38 @@ def get_profile(request, profile_id: str):
 
 # === 2. 면접 질문 생성 ===
 
-@api.post("/interview-sessions", response={201: InterviewSessionResponse, 400: ErrorResponse})
+@api.post("/interview-sessions", 
+          response={201: InterviewSessionResponse, 400: ErrorResponse},
+          summary="🎯 맞춤형 면접 질문 5개 생성",
+          description="""
+          ## 🎯 핵심 기능
+          이력서 분석 결과를 바탕으로 **회사 유형과 포지션 레벨에 맞는 개인화된 면접 질문 5개**를 생성합니다.
+          
+          ## 🏢 회사 유형별 차별화
+          - **startup**: 빠른 성장, 다양한 역할, 문제해결 능력 중시
+          - **midsize**: 안정성과 성장의 균형, 체계적 프로세스
+          - **large**: 전문성, 체계적 업무, 협업 능력
+          - **foreign**: 글로벌 마인드, 커뮤니케이션, 다양성
+          
+          ## 📊 질문 카테고리 (각 1개씩)
+          1. **기술 전문성 & 실무 경험** (고급 난이도)
+          2. **문제 해결 & 트러블슈팅** (중급-고급 난이도)
+          3. **학습 능력 & 적응력** (중급 난이도)
+          4. **팀워크 & 커뮤니케이션** (중급 난이도)
+          5. **회사 적합성 & 비전** (기본-중급 난이도)
+          
+          ## 📋 입력 예시
+          ```json
+          {
+            "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
+            "target_company_type": "startup",
+            "target_position_level": "mid"
+          }
+          ```
+          
+          ✨ **차별화**: 지원자의 실제 경험을 언급한 구체적이고 날카로운 질문
+          """,
+          tags=["면접 질문"])
 def create_interview_session(request, data: InterviewSessionCreateRequest):
     """
     🎯 맞춤 면접 모의 질문 생성 API
@@ -226,7 +305,44 @@ def create_interview_session(request, data: InterviewSessionCreateRequest):
 
 # === 3. 학습 경로 생성 ===
 
-@api.post("/learning-paths", response={201: LearningPathResponse, 400: ErrorResponse})
+@api.post("/learning-paths", 
+          response={201: LearningPathResponse, 400: ErrorResponse},
+          summary="📚 개인화된 학습 경로 추천",
+          description="""
+          ## 🎯 핵심 기능
+          현재 수준 분석을 바탕으로 **실전 중심의 3단계 학습 로드맵**을 설계합니다.
+          
+          ## ✅ AI Challenge 필수 요소 포함
+          - ⚡ **특정 기술 스택 심화**: 현재 기술을 전문가 수준으로 발전
+          - 🛠️ **관련 프로젝트 경험**: 실제 포트폴리오가 될 수 있는 프로젝트
+          - 💬 **커뮤니케이션 스킬**: 기술 발표, 코드 리뷰, 팀 협업 역량
+          - 📈 **시장 트렌드 반영**: 최신 기술 동향과 채용 요구사항
+          
+          ## 📅 3단계 로드맵 구조
+          1. **1단계: 기술 전문성 심화** (4주)
+             - 현재 주력 기술 스택의 고급 기능 마스터
+             - 포트폴리오 프로젝트 완성
+             
+          2. **2단계: 확장 기술 습득 및 실전 경험** (6주)
+             - 인접 기술 스택 습득 (클라우드/데브옵스)
+             - 오픈소스 기여 및 커뮤니티 활동
+             
+          3. **3단계: 리더십 및 영향력 확장** (2주)
+             - 멘토링 및 기술 발표 경험
+             - 프로세스 개선 제안
+          
+          ## 📋 입력 예시
+          ```json
+          {
+            "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
+            "target_goal": "skill_enhancement",
+            "preferred_duration_months": 3
+          }
+          ```
+          
+          🎯 **결과**: 구체적인 학습 자료, 측정 가능한 마일스톤, 실행 가능한 액션 플랜
+          """,
+          tags=["학습 경로"])
 def create_learning_path(request, data: LearningPathCreateRequest):
     """
     📚 자기 개발 학습 경로 추천 API
@@ -305,7 +421,11 @@ def create_learning_path(request, data: LearningPathCreateRequest):
 
 # === 4. 헬스체크 & 상태 확인 ===
 
-@api.get("/health", response=SuccessResponse)
+@api.get("/health", 
+         response=SuccessResponse,
+         summary="🩺 API 상태 확인",
+         description="API 서버의 상태와 사용 가능한 기능을 확인합니다.",
+         tags=["시스템"])
 def health_check(request):
     """API 상태 확인"""
     return SuccessResponse(
@@ -324,7 +444,11 @@ def health_check(request):
 
 # === 5. 통계 & 인사이트 ===
 
-@api.get("/profiles/{profile_id}/insights", response=SuccessResponse)
+@api.get("/profiles/{profile_id}/insights", 
+         response=SuccessResponse,
+         summary="📊 프로필 인사이트",
+         description="프로필 활용 현황과 추천사항을 제공합니다.",
+         tags=["분석"])
 def get_profile_insights(request, profile_id: str):
     """프로필 인사이트 조회 (추가 기능)"""
     try:
