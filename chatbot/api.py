@@ -36,6 +36,11 @@ api = NinjaAPI(
     description="""
     🎯 이력서 기반 개인 맞춤형 커리어 코칭 시스템
     
+    👨‍💻 개발자: 이재훈
+    📧 이메일: ljhx6787@naver.com  
+    🐙 GitHub: https://github.com/Jeedoli
+    📁 포트폴리오: https://www.notion.so/Portfolio-Project-562a127538cf4f4483456207bfdacaa9
+    
     3단계 AI 분석 프로세스:
     1. 📝 이력서 심층 분석 - 20년 경력 헤드헌터 관점의 정밀 진단
     2. 🎯 맞춤형 면접 질문 5개 - 회사 유형별 실전 질문 생성
@@ -53,12 +58,6 @@ api = NinjaAPI(
     3. /learning-paths 로 개인화된 학습 경로 추천
     """,
     version="1.0.0",
-    contact={
-    "name": "지돌이",
-    "email": "ljhx6787@naver.com",
-    "github": "https://github.com/Jeedoli",
-    "portfolio": "https://www.notion.so/Portfolio-Project-562a127538cf4f4483456207bfdacaa9"
-    },
     docs_url="/docs"
 )
 
