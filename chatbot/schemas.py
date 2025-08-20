@@ -70,16 +70,6 @@ class ResumeProfileCreateRequest(BaseModel):
         example=3
     )
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "career_summary": "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발 경험. 월 100만 주문 처리 시스템 설계 및 운영, 팀 리딩 경험 보유. AWS 클라우드 인프라 구축 및 Docker/Kubernetes 기반 CI/CD 파이프라인 구축 경험.",
-                "job_role": "Spring Boot/MSA 기반 E-commerce 백엔드 개발",
-                "technical_skills": "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes, MySQL, Redis, Git, Jenkins, JPA/Hibernate, RESTful API",
-                "experience_years": 3
-            }
-        }
-
     @validator('career_summary')
     def validate_career_summary(cls, v):
         if not v.strip():
@@ -109,15 +99,6 @@ class InterviewSessionCreateRequest(BaseModel):
         example="mid"
     )
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
-                "target_company_type": "startup",
-                "target_position_level": "mid"
-            }
-        }
-
 
 class LearningPathCreateRequest(BaseModel):
     """학습 경로 생성 요청"""
@@ -135,15 +116,6 @@ class LearningPathCreateRequest(BaseModel):
         description="선호하는 학습 기간(개월) - 1~24개월 범위",
         example=3
     )
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "profile_id": "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757",
-                "target_goal": "skill_enhancement",
-                "preferred_duration_months": 3
-            }
-        }
 
 
 # === 응답 스키마 ===
@@ -180,37 +152,37 @@ class LearningStep(BaseModel):
 class ResumeProfileResponse(BaseModel):
     """이력서 프로필 응답"""
     
-    id: str
-    career_summary: str
-    job_role: str
-    technical_skills: str
-    experience_years: int
-    created_at: datetime
-    analysis_result: Optional[ResumeAnalysisResult] = None
+    id: str = Field(..., description="프로필 고유 ID (UUID 형식)")
+    career_summary: str = Field(..., description="경력 요약")
+    job_role: str = Field(..., description="현재 또는 희망 직무")
+    technical_skills: str = Field(..., description="보유 기술 스킬")
+    experience_years: int = Field(..., description="총 경력 연수")
+    created_at: datetime = Field(..., description="프로필 생성 일시")
+    analysis_result: Optional[ResumeAnalysisResult] = Field(None, description="AI 분석 결과 (프로필 생성 시 자동 생성)")
 
 
 class InterviewSessionResponse(BaseModel):
     """면접 세션 응답"""
     
-    id: str
-    profile_id: str
-    target_company_type: str
-    target_position_level: str
-    questions: List[InterviewQuestion]
-    created_at: datetime
-    generation_metadata: Dict[str, Any]
+    id: str = Field(..., description="면접 세션 고유 ID (UUID 형식)")
+    profile_id: str = Field(..., description="연결된 이력서 프로필 ID")
+    target_company_type: str = Field(..., description="목표 회사 유형 (startup/midsize/large/foreign)")
+    target_position_level: str = Field(..., description="목표 포지션 레벨 (junior/mid/senior/lead)")
+    questions: List[InterviewQuestion] = Field(..., description="AI가 생성한 맞춤형 면접 질문 5개")
+    created_at: datetime = Field(..., description="면접 세션 생성 일시")
+    generation_metadata: Dict[str, Any] = Field(..., description="AI 생성 메타데이터 (모델명, 토큰 사용량 등)")
 
 
 class LearningPathResponse(BaseModel):
     """학습 경로 응답"""
     
-    id: str
-    profile_id: str
-    target_goal: str
-    learning_roadmap: List[LearningStep]
-    estimated_duration_months: int
-    created_at: datetime
-    generation_metadata: Dict[str, Any]
+    id: str = Field(..., description="학습 경로 고유 ID (UUID 형식)")
+    profile_id: str = Field(..., description="연결된 이력서 프로필 ID")
+    target_goal: str = Field(..., description="학습 목표 (skill_enhancement/career_change/promotion/interview_prep)")
+    learning_roadmap: List[LearningStep] = Field(..., description="AI가 생성한 개인화된 학습 로드맵 (3~5단계)")
+    estimated_duration_months: int = Field(..., description="예상 총 학습 기간 (개월)")
+    created_at: datetime = Field(..., description="학습 경로 생성 일시")
+    generation_metadata: Dict[str, Any] = Field(..., description="AI 생성 메타데이터 (모델명, 토큰 사용량 등)")
 
 
 # === 에러 응답 ===
@@ -219,7 +191,7 @@ class ErrorResponse(BaseModel):
     """에러 응답"""
     
     error: str = Field(..., description="에러 메시지")
-    details: Optional[Dict[str, Any]] = None
+    details: Optional[Dict[str, Any]] = Field(None, description="상세 에러 정보 (선택적)")
 
 
 # === 성공 응답 ===
@@ -228,4 +200,4 @@ class SuccessResponse(BaseModel):
     """성공 응답"""
     
     message: str = Field(..., description="성공 메시지")
-    data: Optional[Dict[str, Any]] = None
+    data: Optional[Dict[str, Any]] = Field(None, description="추가 데이터 (선택적)")
