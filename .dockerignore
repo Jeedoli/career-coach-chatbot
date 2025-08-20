@@ -1,0 +1,93 @@
+# Git
+.git
+.gitignore
+
+# Docker 관련 파일들 (이미지에 불필요)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Python 캐시 및 빌드 파일
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache
+.coverage
+*.egg-info/
+dist/
+build/
+
+# 가상환경
+.venv/
+venv/
+
+# 환경 파일 (실제 .env는 포함되어야 함)
+.env.local
+.env.development
+.env.test
+
+# IDE 설정
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+logs/
+
+# 개발용 데이터베이스 (프로덕션에서는 새로 생성)
+*.sqlite3
+db.sqlite3
+
+# Node modules (혹시 있다면)
+node_modules/
+
+# 문서 파일들
+README_OLD.md
+DEPLOYMENT_GUIDE.md
+AI_CHALLENGE_DEV_LOG.md
+GITHUB_COPILOT_CHAT_LOG.md
+
+# 테스트 파일들
+test_*.py
+*_test.py
+
+# 미디어 파일
+media/
+staticfiles/
+.env.development
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+logs/
+
+# 데이터베이스
+*.sqlite3
+db.sqlite3
+
+# Node modules (if any)
+node_modules
+
+# Documentation
+README_OLD.md
+DEPLOYMENT_GUIDE.md
+
+# Media files
+media/
