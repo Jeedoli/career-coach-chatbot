@@ -72,37 +72,34 @@ def global_exception_handler(request, exc):
           response={201: ResumeProfileResponse, 400: ErrorResponse},
           summary="📝 이력서 프로필 생성 및 AI 분석",
           description="""
-          ## 🎯 핵심 기능
-          구직자의 이력서 정보를 입력받아 **AI가 심층 분석**하고 프로필을 생성합니다.
+          구직자의 이력서 정보를 입력받아 AI가 심층 분석하고 프로필을 생성합니다.
           
-          ## 📋 입력 필드 상세
+          📋 입력 필드:
           
-          ### **career_summary** (필수, 문자열, 최대 1000자)
-          - 본인의 주요 경력과 성과를 요약
-          - 구체적인 프로젝트 경험, 담당 업무, 성과 포함
-          - **예시**: "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발. 월 100만 주문 처리 시스템 설계 및 운영, 팀 리딩 경험 보유"
+          • career_summary (필수, 최대 1000자)
+            - 본인의 주요 경력과 성과를 요약
+            - 구체적인 프로젝트 경험, 담당 업무, 성과 포함
+            - 예시: "3년차 백엔드 개발자로 Spring Boot/MSA 기반 E-commerce 플랫폼 개발"
           
-          ### **job_role** (필수, 문자열, 최대 200자)
-          - 현재 또는 목표하는 구체적인 직무
-          - **예시**: "Spring Boot/MSA 기반 E-commerce 백엔드 개발", "React/TypeScript 프론트엔드 개발자"
+          • job_role (필수, 최대 200자)
+            - 현재 또는 목표하는 구체적인 직무
+            - 예시: "Spring Boot/MSA 기반 E-commerce 백엔드 개발"
           
-          ### **technical_skills** (필수, 문자열, 최대 500자)
-          - 보유한 기술 스택을 쉼표로 구분하여 나열
-          - 프로그래밍 언어, 프레임워크, 도구, 클라우드 서비스 포함
-          - **예시**: "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker, Kubernetes, MySQL, Redis"
+          • technical_skills (필수, 최대 500자)
+            - 보유한 기술 스택을 쉼표로 구분하여 나열
+            - 예시: "Python, Django, Spring Boot, Java, AWS EC2/RDS, Docker"
           
-          ### **experience_years** (필수, 정수)
-          - 해당 분야 총 경력 연수
-          - **범위**: 0~50년
-          - **예시**: 3 (3년차), 0 (신입), 5 (5년차)
+          • experience_years (필수, 정수)
+            - 해당 분야 총 경력 연수 (0~50년)
+            - 예시: 3 (3년차), 0 (신입), 5 (5년차)
           
-          ## 🤖 AI 분석 결과
-          - **career_level**: "junior", "mid", "senior", "lead" 중 하나
-          - **strength_areas**: 시장에서 차별화되는 강점 영역 배열
-          - **improvement_areas**: 발전이 필요한 영역 배열
-          - **market_competitiveness**: 1-10점 경쟁력 점수
+          🤖 AI 분석 결과:
+          - career_level: "junior", "mid", "senior", "lead" 중 하나
+          - strength_areas: 시장에서 차별화되는 강점 영역 배열
+          - improvement_areas: 발전이 필요한 영역 배열  
+          - market_competitiveness: 1-10점 경쟁력 점수
           
-          ⚡ **처리 시간**: 약 5-10초 (OpenAI API 호출 포함)
+          ⚡ 처리 시간: 약 5-10초 (OpenAI API 호출 포함)
           """,
           tags=["이력서 분석"])
 def create_profile(request, data: ResumeProfileCreateRequest):
@@ -175,14 +172,13 @@ def create_profile(request, data: ResumeProfileCreateRequest):
          response={200: ResumeProfileResponse, 404: ErrorResponse},
          summary="📄 프로필 조회",
          description="""
-         ## 🎯 기능
          생성된 이력서 프로필과 AI 분석 결과를 조회합니다.
          
-         ## 📋 URL 파라미터
-         - **profile_id** (필수): 조회할 프로필의 UUID
-         - **예시**: `/profiles/9b63e33b-d5b7-4a98-b2b1-ff7201d6b757`
+         📋 URL 파라미터:
+         - profile_id (필수): 조회할 프로필의 UUID
+         - 예시: /profiles/9b63e33b-d5b7-4a98-b2b1-ff7201d6b757
          
-         ## 📊 응답 내용
+         📊 응답 내용:
          - 입력한 이력서 정보 (career_summary, job_role 등)
          - AI 분석 결과 (강점, 개선점, 시장 경쟁력 등)
          - 생성 일시 및 메타데이터
@@ -222,38 +218,36 @@ def get_profile(request, profile_id: str):
           response={201: InterviewSessionResponse, 400: ErrorResponse},
           summary="🎯 맞춤형 면접 질문 5개 생성",
           description="""
-          ## 🎯 핵심 기능
-          이력서 분석 결과를 바탕으로 **회사 유형과 포지션 레벨에 맞는 개인화된 면접 질문 5개**를 생성합니다.
+          이력서 분석 결과를 바탕으로 회사 유형과 포지션 레벨에 맞는 개인화된 면접 질문 5개를 생성합니다.
           
-          ## 📋 입력 필드 상세
+          📋 입력 필드:
           
-          ### **profile_id** (필수, UUID 문자열)
-          - 이전에 생성한 프로필의 고유 ID
-          - `/profiles` API 응답에서 받은 `id` 값 사용
-          - **예시**: "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757"
+          • profile_id (필수, UUID 문자열)
+            - 이전에 생성한 프로필의 고유 ID
+            - /profiles API 응답에서 받은 id 값 사용
+            - 예시: "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757"
           
-          ### **target_company_type** (필수, 문자열)
-          회사 유형에 따라 면접 스타일이 달라집니다:
-          - **"startup"**: 빠른 성장, 다양한 역할, 문제해결 능력 중시
-          - **"midsize"**: 안정성과 성장의 균형, 체계적 프로세스
-          - **"large"**: 전문성, 체계적 업무, 협업 능력
-          - **"foreign"**: 글로벌 마인드, 커뮤니케이션, 다양성
+          • target_company_type (필수)
+            회사 유형에 따라 면접 스타일이 달라집니다:
+            - "startup": 빠른 성장, 다양한 역할, 문제해결 능력 중시
+            - "midsize": 안정성과 성장의 균형, 체계적 프로세스
+            - "large": 전문성, 체계적 업무, 협업 능력  
+            - "foreign": 글로벌 마인드, 커뮤니케이션, 다양성
           
-          ### **target_position_level** (필수, 문자열)
-          지원하려는 포지션 레벨:
-          - **"junior"**: 0-2년차, 기초 역량 및 학습 의지 중심
-          - **"mid"**: 3-5년차, 실무 경험 및 문제 해결 능력 중심
-          - **"senior"**: 6-10년차, 전문성 및 리더십 중심
-          - **"lead"**: 10년차+, 아키텍처 설계 및 팀 관리 중심
+          • target_position_level (필수)
+            지원하려는 포지션 레벨:
+            - "junior": 0-2년차, 기초 역량 및 학습 의지 중심
+            - "mid": 3-5년차, 실무 경험 및 문제 해결 능력 중심
+            - "senior": 6-10년차, 전문성 및 리더십 중심
+            - "lead": 10년차+, 아키텍처 설계 및 팀 관리 중심
           
-          ## � 생성되는 질문 구조
-          각 질문마다 포함되는 정보:
-          - **question**: 개인 경험을 반영한 구체적 질문
-          - **category**: "기술", "경험", "문제해결", "팀워크", "비전" 중 하나
-          - **difficulty_level**: "기본", "중급", "고급" 중 하나
-          - **suggested_answer_approach**: 효과적인 답변 구조 가이드
+          📊 생성되는 질문 구조:
+          - question: 개인 경험을 반영한 구체적 질문
+          - category: "기술", "경험", "문제해결", "팀워크", "비전" 중 하나
+          - difficulty_level: "기본", "중급", "고급" 중 하나
+          - suggested_answer_approach: 효과적인 답변 구조 가이드
           
-          ✨ **차별화**: "자신의 강점은?"이 아닌 실제 경험 기반 구체적 질문
+          ✨ 차별화: "자신의 강점은?"이 아닌 실제 경험 기반 구체적 질문
           """,
           tags=["면접 질문"])
 def create_interview_session(request, data: InterviewSessionCreateRequest):
@@ -338,44 +332,42 @@ def create_interview_session(request, data: InterviewSessionCreateRequest):
           response={201: LearningPathResponse, 400: ErrorResponse},
           summary="📚 개인화된 학습 경로 추천",
           description="""
-          ## 🎯 핵심 기능
-          현재 수준 분석을 바탕으로 **실전 중심의 3단계 학습 로드맵**을 설계합니다.
+          현재 수준 분석을 바탕으로 실전 중심의 3단계 학습 로드맵을 설계합니다.
           
-          ## 📋 입력 필드 상세
+          📋 입력 필드:
           
-          ### **profile_id** (필수, UUID 문자열)
-          - 이전에 생성한 프로필의 고유 ID
-          - `/profiles` API 응답에서 받은 `id` 값 사용
-          - **예시**: "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757"
+          • profile_id (필수, UUID 문자열)
+            - 이전에 생성한 프로필의 고유 ID
+            - /profiles API 응답에서 받은 id 값 사용
+            - 예시: "9b63e33b-d5b7-4a98-b2b1-ff7201d6b757"
           
-          ### **target_goal** (필수, 문자열)
-          학습 목표에 따라 로드맵 구성이 달라집니다:
-          - **"skill_enhancement"**: 현재 기술 스택 심화 및 전문성 강화
-          - **"career_change"**: 새로운 기술 분야로 전환 (예: 백엔드→프론트엔드)
-          - **"promotion"**: 승진 및 리더십 역량 개발 (시니어→리드)
-          - **"interview_prep"**: 면접 및 이직 준비 집중
-          - **"freelance_prep"**: 프리랜서/창업 준비
+          • target_goal (필수)
+            학습 목표에 따라 로드맵 구성이 달라집니다:
+            - "skill_enhancement": 현재 기술 스택 심화 및 전문성 강화
+            - "career_change": 새로운 기술 분야로 전환 (예: 백엔드→프론트엔드)
+            - "promotion": 승진 및 리더십 역량 개발 (시니어→리드)
+            - "interview_prep": 면접 및 이직 준비 집중
+            - "freelance_prep": 프리랜서/창업 준비
           
-          ### **preferred_duration_months** (선택, 정수, 기본값: 3)
-          - 학습 계획 기간 (월 단위)
-          - **권장 범위**: 1-12개월
-          - **예시**: 3 (3개월), 6 (6개월), 12 (1년)
+          • preferred_duration_months (선택, 정수, 기본값: 3)
+            - 학습 계획 기간 (월 단위)
+            - 권장 범위: 1-12개월
+            - 예시: 3 (3개월), 6 (6개월), 12 (1년)
           
-          ## 📅 생성되는 로드맵 구조
-          각 단계별 포함 정보:
-          - **phase**: 단계명 (예: "1단계: Spring Boot 고급 기능 마스터")
-          - **duration_weeks**: 예상 소요 기간 (주 단위)
-          - **objectives**: 구체적 학습 목표 배열
-          - **resources**: 추천 학습 자료 (책, 강의, 문서)
-          - **milestones**: 측정 가능한 성과 지표
-          - **projects**: 실전 경험을 위한 프로젝트 제안
+          📅 생성되는 로드맵 구조:
+          - phase: 단계명 (예: "1단계: Spring Boot 고급 기능 마스터")
+          - duration_weeks: 예상 소요 기간 (주 단위)
+          - objectives: 구체적 학습 목표 배열
+          - resources: 추천 학습 자료 (책, 강의, 문서)
+          - milestones: 측정 가능한 성과 지표
+          - projects: 실전 경험을 위한 프로젝트 제안
           
-          ## ✅ AI Challenge 필수 요소 포함
-          - ⚡ **특정 기술 스택 심화**: 현재 기술을 전문가 수준으로 발전
-          - 🛠️ **관련 프로젝트 경험**: 실제 포트폴리오가 될 수 있는 프로젝트
-          - 💬 **커뮤니케이션 스킬**: 기술 발표, 코드 리뷰, 팀 협업 역량
+          ✅ AI Challenge 필수 요소 포함:
+          - ⚡ 특정 기술 스택 심화: 현재 기술을 전문가 수준으로 발전
+          - 🛠️ 관련 프로젝트 경험: 실제 포트폴리오가 될 수 있는 프로젝트
+          - 💬 커뮤니케이션 스킬: 기술 발표, 코드 리뷰, 팀 협업 역량
           
-          🎯 **결과**: 구체적 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 액션 플랜
+          🎯 결과: 구체적 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 액션 플랜
           """,
           tags=["학습 경로"])
 def create_learning_path(request, data: LearningPathCreateRequest):
@@ -460,15 +452,14 @@ def create_learning_path(request, data: LearningPathCreateRequest):
          response=SuccessResponse,
          summary="🩺 API 상태 확인",
          description="""
-         ## 🎯 기능
          API 서버의 상태와 사용 가능한 기능을 확인합니다.
          
-         ## 📊 응답 내용
+         📊 응답 내용:
          - 서버 상태 (healthy/unhealthy)
          - API 버전 정보
          - 사용 가능한 주요 기능 목록
          
-         💡 **용도**: 서버 연결 테스트, 기능 확인
+         💡 용도: 서버 연결 테스트, 기능 확인
          """,
          tags=["시스템"])
 def health_check(request):
@@ -493,18 +484,17 @@ def health_check(request):
          response=SuccessResponse,
          summary="📊 프로필 인사이트",
          description="""
-         ## 🎯 기능
          프로필 활용 현황과 개인화된 추천사항을 제공합니다.
          
-         ## 📋 URL 파라미터
-         - **profile_id** (필수): 인사이트를 조회할 프로필의 UUID
+         📋 URL 파라미터:
+         - profile_id (필수): 인사이트를 조회할 프로필의 UUID
          
-         ## 📊 응답 내용
-         - **활용 현황**: 생성된 면접 세션 수, 학습 경로 수
-         - **커리어 요약**: 현재 레벨, 시장 경쟁력 점수
-         - **개인화 추천**: 다음 단계 액션 아이템
+         📊 응답 내용:
+         - 활용 현황: 생성된 면접 세션 수, 학습 경로 수
+         - 커리어 요약: 현재 레벨, 시장 경쟁력 점수
+         - 개인화 추천: 다음 단계 액션 아이템
          
-         💡 **용도**: 프로필 활용 최적화, 다음 단계 가이드
+         💡 용도: 프로필 활용 최적화, 다음 단계 가이드
          """,
          tags=["분석"])
 def get_profile_insights(request, profile_id: str):
