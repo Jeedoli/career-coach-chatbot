@@ -81,10 +81,6 @@ Swagger UI를 통해 각 API 엔드포인트를 쉽게 테스트하고 응답을
 1. `POST /api/profiles` 섹션 클릭
 2. **"Try it out"** 버튼 클릭
 3. **Request body** 영역에서 **"Example Value"** 탭 확인
-
-💡 Request & Response 예시:
-<summary><b>📋 요청 데이터 스키마</b></summary> <img src="https://github.com/user-attachments/assets/bd7629ae-c4fa-4b18-be5a-4f7ac8309870" alt="Response Schema" width="400"/>
-<summary><b>📊 응답 데이터 스키마/b></summary> <img src="https://github.com/user-attachments/assets/97e4325d-f814-4d7b-8f1f-3dd42aaec65c" alt="Response Schema" width="400"/>
 4. 예시 데이터를 참고하여 본인의 정보로 수정:
    ```json
    {
@@ -99,6 +95,9 @@ Swagger UI를 통해 각 API 엔드포인트를 쉽게 테스트하고 응답을
 
 **⏱️ 예상 소요 시간**: 5-10초 (AI 분석 포함)
 **📄 응답 내용**: 프로필 정보 + AI가 분석한 커리어 레벨, 강점, 개선점, 시장 경쟁력
+💡 Request & Response 예시:
+<summary><b>📋 요청 데이터 스키마</b></summary> <img src="https://github.com/user-attachments/assets/bd7629ae-c4fa-4b18-be5a-4f7ac8309870" alt="Response Schema" width="400"/>
+<summary><b>📊 응답 데이터 스키마/b></summary> <img src="https://github.com/user-attachments/assets/97e4325d-f814-4d7b-8f1f-3dd42aaec65c" alt="Response Schema" width="400"/>
 
 ##### 🎯 **Step 2: 맞춤형 면접 질문 생성**
 1. `POST /api/interview-sessions` 섹션 클릭
