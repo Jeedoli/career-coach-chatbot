@@ -31,6 +31,7 @@ class LearningGoal(str, Enum):
     CAREER_CHANGE = "career_change"
     PROMOTION = "promotion"
     INTERVIEW_PREP = "interview_prep"
+    FREELANCE_PREP = "freelance_prep"
 
 
 # === 요청 스키마 ===
@@ -147,6 +148,8 @@ class LearningStep(BaseModel):
     objectives: List[str] = Field(..., description="학습 목표", example=["현재 주력 기술 스택의 고급 기능 마스터", "성능 최적화 및 아키텍처 설계 능력 향상", "실전 프로젝트 1개 완성 (포트폴리오용)"])
     resources: List[str] = Field(..., description="추천 학습 자료", example=["Spring Boot 공식 문서 심화 학습", "클린 아키텍처 서적", "GitHub 오픈소스 프로젝트 분석"])
     milestones: List[str] = Field(..., description="마일스톤", example=["복잡한 비즈니스 로직을 포함한 개인 프로젝트 완성", "기술 블로그 포스팅 3회 이상", "코드 품질 측정 도구로 80% 이상 달성"])
+    projects: List[str] = Field(..., description="실전 경험을 위한 구체적 프로젝트 제안", example=["E-commerce API 서버 구축 (Spring Boot + JPA + Redis)", "실시간 채팅 시스템 구현 (WebSocket + JWT 인증)", "마이크로서비스 아키텍처 기반 TODO 서비스"])
+    personal_advice: str = Field(..., description="개인 맞춤형 진심어린 조언 (2-3줄)", example="현재 백엔드 실력이 탄탄하시니, 이제는 설계 능력과 성능 최적화에 집중하세요. 특히 Spring Boot의 고급 기능들을 실제 프로젝트에 적용해보면서 경험치를 쌓아가시길 바랍니다. 무엇보다 꾸준한 학습 습관이 중요하니 하루에 1시간씩이라도 투자하시면 3개월 후 확실한 성장을 느끼실 겁니다!")
 
 
 class ResumeProfileResponse(BaseModel):
