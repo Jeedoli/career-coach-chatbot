@@ -16,9 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
+from django.urls import re_path
 from chatbot.api import api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api.urls),  # Django Ninja API
 ]
+
+# 개발 환경에서만 정적 파일 서빙 추가
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # 추가적으로 정적 파일 서빙 강제
+    urlpatterns += [
+        re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    ]
