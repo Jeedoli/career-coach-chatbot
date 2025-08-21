@@ -364,18 +364,19 @@ def create_interview_session(request, data: InterviewSessionCreateRequest):
           - phase: 단계명 (예: "1단계: Spring Boot 고급 기능 마스터")
           - duration_weeks: 예상 소요 기간 (주 단위)
           - objectives: 구체적 학습 목표 배열
-          - resources: 추천 학습 자료 (책, 강의, 문서)
+          - resources: 추천 학습 자료 (인프런, 패스트캠퍼스, 벨로그 등)
           - milestones: 측정 가능한 성과 지표
           - projects: 실전 경험을 위한 구체적 프로젝트 제안 (기술 스택 포함)
-          - personal_advice: 개인 맞춤형 진심어린 조언 (2-3줄)
+          - personal_advice: 개인 맞춤형 구체적 실행 방법론
           
           ✅ AI Challenge 필수 요소 포함:
           - ⚡ 특정 기술 스택 심화: 현재 기술을 전문가 수준으로 발전
           - 🛠️ 관련 프로젝트 경험: 실제 포트폴리오가 될 수 있는 프로젝트
-          - 💬 커뮤니케이션 스킬: 기술 발표, 코드 리뷰, 팀 협업 역량
+          - 💬 커뮤니케이션 스킬: 기술 발표, 코드 리뷰, 팀 협업 역량 (OKKY, 원티드 등)
+          - 🇰🇷 한국 취업 시장 맞춤: 국내 개발자가 실제 사용하는 플랫폼 중심
           - 🎯 개인화 조언: 현재 수준과 목표에 맞는 구체적 실행 방안
           
-          🎯 결과: 구체적 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 프로젝트 + 진심어린 조언
+          🎯 결과: 한국 개발자 맞춤 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 프로젝트 + 구체적 방법론
           """,
           tags=["학습 경로"])
 def create_learning_path(request, data: LearningPathCreateRequest):
