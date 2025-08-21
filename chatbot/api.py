@@ -366,14 +366,16 @@ def create_interview_session(request, data: InterviewSessionCreateRequest):
           - objectives: 구체적 학습 목표 배열
           - resources: 추천 학습 자료 (책, 강의, 문서)
           - milestones: 측정 가능한 성과 지표
-          - projects: 실전 경험을 위한 프로젝트 제안
+          - projects: 실전 경험을 위한 구체적 프로젝트 제안 (기술 스택 포함)
+          - personal_advice: 개인 맞춤형 진심어린 조언 (2-3줄)
           
           ✅ AI Challenge 필수 요소 포함:
           - ⚡ 특정 기술 스택 심화: 현재 기술을 전문가 수준으로 발전
           - 🛠️ 관련 프로젝트 경험: 실제 포트폴리오가 될 수 있는 프로젝트
           - 💬 커뮤니케이션 스킬: 기술 발표, 코드 리뷰, 팀 협업 역량
+          - 🎯 개인화 조언: 현재 수준과 목표에 맞는 구체적 실행 방안
           
-          🎯 결과: 구체적 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 액션 플랜
+          🎯 결과: 구체적 학습 자료 + 측정 가능한 마일스톤 + 실행 가능한 프로젝트 + 진심어린 조언
           """,
           tags=["학습 경로"])
 def create_learning_path(request, data: LearningPathCreateRequest):
@@ -452,7 +454,7 @@ def create_learning_path(request, data: LearningPathCreateRequest):
         )
 
 
-# === 4. 헬스체크 & 상태 확인 ===
+# === 4. 헬스체크 ===
 
 @api.get("/health", 
          response=SuccessResponse,
@@ -484,52 +486,4 @@ def health_check(request):
     )
 
 
-# === 5. 통계 & 인사이트 ===
 
-@api.get("/profiles/{profile_id}/insights", 
-         response=SuccessResponse,
-         summary="📊 프로필 인사이트",
-         description="""
-         프로필 활용 현황과 개인화된 추천사항을 제공합니다.
-         
-         📋 URL 파라미터:
-         - profile_id (필수): 인사이트를 조회할 프로필의 UUID
-         
-         📊 응답 내용:
-         - 활용 현황: 생성된 면접 세션 수, 학습 경로 수
-         - 커리어 요약: 현재 레벨, 시장 경쟁력 점수
-         - 개인화 추천: 다음 단계 액션 아이템
-         
-         💡 용도: 프로필 활용 최적화, 다음 단계 가이드
-         """,
-         tags=["분석"])
-def get_profile_insights(request, profile_id: str):
-    """프로필 인사이트 조회 (추가 기능)"""
-    try:
-        profile = get_object_or_404(ResumeProfile, id=profile_id)
-        
-        # 관련 세션들 조회
-        interview_sessions = profile.interview_sessions.count()
-        learning_paths = profile.learning_paths.count()
-        
-        insights = {
-            "profile_summary": {
-                "career_level": profile.analysis_result.get('career_level') if profile.analysis_result else "분석 필요",
-                "market_competitiveness": profile.analysis_result.get('market_competitiveness') if profile.analysis_result else 0,
-                "created_sessions": interview_sessions,
-                "created_learning_paths": learning_paths
-            },
-            "recommendations": [
-                "정기적인 면접 질문 업데이트",
-                "학습 경로 진행 상황 체크",
-                "새로운 기술 트렌드 반영"
-            ]
-        }
-        
-        return SuccessResponse(
-            message="프로필 인사이트 조회 완료",
-            data=insights
-        )
-        
-    except Exception as e:
-        return 404, ErrorResponse(error="프로필을 찾을 수 없습니다.")
