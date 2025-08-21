@@ -141,3 +141,6 @@ static/
 # Logs
 logs/
 *.log
+
+# AI challenge chat log for submission
+AI를활용한기록_제출용.md
