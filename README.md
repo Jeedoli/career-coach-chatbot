@@ -7,7 +7,7 @@
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-blue?style=flat-square)](https://openai.com/)
 [![Python](https://img.shields.io/badge/Python-3.12-yellow?style=flat-square)](https://python.org/)
 
-## 📺 데모 영상 및 문서
+## 📺 참고 문서
 
 - 🌐 **라이브 API 문서 (Swagger)**: [https://api.jeedoli.shop/api/docs](https://api.jeedoli.shop/api/docs)
 - 📊 **개발 과정 로그**: [AI_CHALLENGE_DEV_LOG.md](./AI_CHALLENGE_DEV_LOG.md)
